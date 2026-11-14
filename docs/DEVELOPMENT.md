@@ -17,6 +17,7 @@ node --version
 python scripts/check_docs.py
 python scripts/check_costs.py
 python -m openapi_spec_validator contracts/openapi.json
+python -m unittest discover -s tests -v
 ```
 
 新克隆环境需要先准备可用的 Python 3.12；不回退到系统 Python 3.9。解释器已安装时，可建立文档环境：
@@ -29,7 +30,7 @@ python -m pip install -r requirements-docs.lock
 
 `requirements-docs.txt` 表达直接工具依赖，`requirements-docs.lock` 锁定本轮文档工具解析结果。CI 与本地使用同一锁文件；依赖升级需要重新生成锁、运行检查并审查变化。安装命令不代表已在每个操作系统执行，记录以 [验证](VERIFICATION.md) 为准。
 
-上述三项检查只验证各自覆盖的文档、成本计算和接口结构。它们不证明数据库隔离、真实系统集成、桌面交互、Agent 判断或组织效率已经成立。
+上述检查只验证各自覆盖的文档、成本计算、接口结构与检查器回归。10项回归控制包含人为破坏认证、并发、逐路由映射等负例和合法邻近对照，用于防止检查工具再次漏报；它们不证明数据库隔离、真实系统集成、桌面交互、Agent 判断或组织效率已经成立。
 
 当前没有 `npm run dev`、应用安装/启动、数据库迁移或 worker 启动命令。不能照抄未来目录为“已经可以运行”。实现相应组件时，维护者必须加入真实脚本、锁文件、配置样例和可重复启动证据，再更新本指南。
 
@@ -48,7 +49,7 @@ apps/
     migrations/           # Alembic 版本化迁移
 contracts/
   openapi.json            # 已有的接口设计契约
-  examples/               # 后续实现使用的纯合成请求/响应
+  examples.json           # 已有的纯合成结构正反例
 ```
 
 前端独立构建，后端 API 与 worker 分进程发布。它们可以使用同一仓库和同源反向代理，但前端不得直连 DB、保存集成凭据或执行授权决定。桌面是首版交互验收基线。

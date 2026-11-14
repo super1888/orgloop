@@ -126,7 +126,27 @@ def check(root: Path) -> tuple[list[str], dict]:
     walk(spec)
     operations = []
     actual_routes = set()
+    route_requirements = {}
     api_req = set()
+    conditional_operations = {
+        "updateWorkItem", "transitionWorkItem", "commandRun", "proposeSourceCorrection",
+        "revokeSourceAccess", "respondSupportRequest", "fulfilSupportRequest",
+        "revokeAuthorization", "executeAction", "reconcileAction", "withdrawRelease",
+        "addParticipant", "removeParticipant", "requestOwnershipTransfer",
+        "respondOwnershipTransfer", "resolveCorrection", "updateCapabilityOffer",
+        "withdrawCapabilityOffer", "verifyOutcome", "reviseOutcome", "resolveFeedback",
+        "reviseExperience", "confirmExperience", "reviseSkill", "confirmSkill",
+        "resolveUsageRestriction", "confirmResourceLead", "supplementSupportRequest",
+        "reviewEvaluation",
+    }
+    # These are design invariants derived from identity and concurrency requirements,
+    # not optional annotations that a changed operation may disable itself.
+    session_scheme = spec.get("components", {}).get("securitySchemes", {}).get("sessionCookie", {})
+    if session_scheme != {"type": "apiKey", "in": "cookie", "name": "orgloop_session"}:
+        errors.append("session cookie security scheme changed or missing")
+    if_match = spec.get("components", {}).get("parameters", {}).get("IfMatch", {})
+    if if_match.get("required") is not True or if_match.get("in") != "header" or if_match.get("name") != "If-Match":
+        errors.append("If-Match must remain a required header precondition")
     for path, methods in spec.get("paths", {}).items():
         for method, operation in methods.items():
             if method not in {"get", "post", "patch", "put", "delete", "options", "head"}:
@@ -134,21 +154,38 @@ def check(root: Path) -> tuple[list[str], dict]:
             operations.append(operation["operationId"])
             actual_routes.add((method.upper(), path))
             links = operation.get("x-requirements", [])
+            route_requirements[(method.upper(), path)] = set(links)
             if not links or set(links) - expected_req:
                 errors.append(f"{method} {path}: missing/unknown requirement mapping")
             api_req.update(links)
             params = {p.get("$ref", "") for p in operation.get("parameters", [])}
-            if operation.get("x-mutating"):
+            expected_mutating = method not in {"get", "head", "options"} and operation["operationId"] not in {"searchContext", "searchResources"}
+            if operation.get("x-mutating") != expected_mutating:
+                errors.append(f"{method} {path}: incorrect mutating classification")
+            if expected_mutating:
                 for parameter in ("IdempotencyKey", "CsrfToken"):
                     if f"#/components/parameters/{parameter}" not in params:
                         errors.append(f"{method} {path}: missing {parameter}")
-            if operation.get("security") == [] and operation["operationId"] not in {"startLogin", "finishLogin"}:
-                errors.append(f"{method} {path}: unexpected unauthenticated operation")
+            security = operation.get("security", spec.get("security"))
+            if operation["operationId"] in {"startLogin", "finishLogin"}:
+                if security != []:
+                    errors.append(f"{method} {path}: login must not require an existing session")
+            elif not security or any(item != {"sessionCookie": []} for item in security):
+                errors.append(f"{method} {path}: missing or bypassable effective session authentication")
+            if operation["operationId"] in conditional_operations or method in {"patch", "put", "delete"}:
+                if "#/components/parameters/IfMatch" not in params:
+                    errors.append(f"{method} {path}: missing required optimistic concurrency precondition")
     if len(set(operations)) != len(operations):
         errors.append("OpenAPI: duplicate operationId")
     documented_routes = set(re.findall(r"\| `(GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS)` \| `([^`]+)` \|", (root / "docs/API.md").read_text()))
     if actual_routes != documented_routes:
         errors.append(f"API directory drift: undocumented={sorted(actual_routes-documented_routes)} stale={sorted(documented_routes-actual_routes)}")
+    mapping_rows = re.findall(r"\| `(GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS)` \| `([^`]+)` \| [^|]* \| ([^|\n]*)\|", (root / "docs/API.md").read_text())
+    if len(mapping_rows) != len(actual_routes):
+        errors.append("API directory contains duplicate rows or missing per-route mappings")
+    for method, path, mapped in mapping_rows:
+        if route_requirements.get((method, path)) != set(re.findall(r"REQ-\d{3}", mapped)):
+            errors.append(f"{method} {path}: per-route requirement mapping differs between API document and contract")
     if api_req != expected_req:
         # Frontend separation is partly architectural, but the contract must map it.
         errors.append(f"API requirement coverage missing: {sorted(expected_req-api_req)}")

@@ -6333,6 +6333,735 @@
         ]
       }
     },
+    "/v1/inbox": {
+      "get": {
+        "operationId": "getInbox",
+        "summary": "读取本人或有效委托范围内的待处理支持、交接和审阅",
+        "description": "读取本人或有效委托范围内的待处理支持、交接和审阅",
+        "tags": [
+          "REQ-001"
+        ],
+        "x-requirements": [
+          "REQ-001",
+          "REQ-004",
+          "REQ-011",
+          "REQ-014"
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "headers": {
+              "X-Request-Id": {
+                "description": "关联审计与追踪的请求标识",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InboxPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "x-mutating": false,
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ]
+      }
+    },
+    "/v1/support-responses/{id}": {
+      "get": {
+        "operationId": "getSupportResponse",
+        "summary": "回读具体回应、接受条件和回应主体",
+        "description": "回读具体回应、接受条件和回应主体",
+        "tags": [
+          "REQ-004"
+        ],
+        "x-requirements": [
+          "REQ-004"
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "headers": {
+              "X-Request-Id": {
+                "description": "关联审计与追踪的请求标识",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportResponseRecord"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "x-mutating": false,
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/support-fulfilments/{id}": {
+      "get": {
+        "operationId": "getSupportFulfilment",
+        "summary": "回读实际帮助、证据和关联结果",
+        "description": "回读实际帮助、证据和关联结果",
+        "tags": [
+          "REQ-004"
+        ],
+        "x-requirements": [
+          "REQ-004",
+          "REQ-007"
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "headers": {
+              "X-Request-Id": {
+                "description": "关联审计与追踪的请求标识",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportFulfilmentRecord"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "x-mutating": false,
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/support-supplements/{id}": {
+      "get": {
+        "operationId": "getSupportSupplement",
+        "summary": "回读补充资料与期限修订",
+        "description": "回读补充资料与期限修订",
+        "tags": [
+          "REQ-004"
+        ],
+        "x-requirements": [
+          "REQ-004"
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "headers": {
+              "X-Request-Id": {
+                "description": "关联审计与追踪的请求标识",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportSupplementRecord"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "x-mutating": false,
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/support-requests/{id}/supplements": {
+      "post": {
+        "operationId": "supplementSupportRequest",
+        "summary": "在待受理或补资料状态提交补充，保留原请求",
+        "description": "在待受理或补资料状态提交补充，保留原请求",
+        "tags": [
+          "REQ-004"
+        ],
+        "x-requirements": [
+          "REQ-004"
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "headers": {
+              "X-Request-Id": {
+                "description": "关联审计与追踪的请求标识",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "ETag": {
+                "description": "当前聚合版本，例如双引号包裹的1",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error422"
+          },
+          "412": {
+            "$ref": "#/components/responses/Error412"
+          },
+          "428": {
+            "$ref": "#/components/responses/Error428"
+          }
+        },
+        "x-mutating": true,
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          },
+          {
+            "$ref": "#/components/parameters/CsrfToken"
+          },
+          {
+            "$ref": "#/components/parameters/IfMatch"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportSupplementCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/action-attempts/{id}": {
+      "get": {
+        "operationId": "getActionAttempt",
+        "summary": "读取实际执行尝试与回执关联",
+        "description": "读取实际执行尝试与回执关联",
+        "tags": [
+          "REQ-006"
+        ],
+        "x-requirements": [
+          "REQ-006"
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "headers": {
+              "X-Request-Id": {
+                "description": "关联审计与追踪的请求标识",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionAttempt"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "x-mutating": false,
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/action-receipts/{id}": {
+      "get": {
+        "operationId": "getActionReceipt",
+        "summary": "按当前权限回读真实或模拟回执证据",
+        "description": "按当前权限回读真实或模拟回执证据",
+        "tags": [
+          "REQ-006"
+        ],
+        "x-requirements": [
+          "REQ-006",
+          "REQ-007"
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "headers": {
+              "X-Request-Id": {
+                "description": "关联审计与追踪的请求标识",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "x-mutating": false,
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/evaluation-runs/{id}/reviews": {
+      "post": {
+        "operationId": "reviewEvaluation",
+        "summary": "由独立审阅者针对准确报告版本确认或提出争议",
+        "description": "由独立审阅者针对准确报告版本确认或提出争议",
+        "tags": [
+          "REQ-010"
+        ],
+        "x-requirements": [
+          "REQ-010"
+        ],
+        "responses": {
+          "201": {
+            "description": "成功",
+            "headers": {
+              "X-Request-Id": {
+                "description": "关联审计与追踪的请求标识",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "Location": {
+                "description": "可读取的资源或作业位置",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationReview"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error422"
+          },
+          "412": {
+            "$ref": "#/components/responses/Error412"
+          },
+          "428": {
+            "$ref": "#/components/responses/Error428"
+          }
+        },
+        "x-mutating": true,
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          },
+          {
+            "$ref": "#/components/parameters/CsrfToken"
+          },
+          {
+            "$ref": "#/components/parameters/IfMatch"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluationReviewCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/evaluation-reviews/{id}": {
+      "get": {
+        "operationId": "getEvaluationReview",
+        "summary": "读取独立审阅依据与报告绑定",
+        "description": "读取独立审阅依据与报告绑定",
+        "tags": [
+          "REQ-010"
+        ],
+        "x-requirements": [
+          "REQ-010"
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "headers": {
+              "X-Request-Id": {
+                "description": "关联审计与追踪的请求标识",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationReview"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "x-mutating": false,
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/confirmations/{id}": {
+      "get": {
+        "operationId": "getConfirmation",
+        "summary": "读取内容及用途确认，不扩大执行权",
+        "description": "读取内容及用途确认，不扩大执行权",
+        "tags": [
+          "REQ-008"
+        ],
+        "x-requirements": [
+          "REQ-008",
+          "REQ-009",
+          "REQ-011"
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "headers": {
+              "X-Request-Id": {
+                "description": "关联审计与追踪的请求标识",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Confirmation"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "x-mutating": false,
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
     "/v1/source-versions/{id}/attachment": {
       "get": {
         "operationId": "getSourceAttachment",
@@ -7950,6 +8679,20 @@
               "type": "string",
               "format": "uuid"
             }
+          },
+          "fulfilment_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "supplement_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         },
         "required": [
@@ -7967,7 +8710,9 @@
           "context_summary",
           "needed_by",
           "conditions",
-          "response_record_ids"
+          "response_record_ids",
+          "fulfilment_record_ids",
+          "supplement_record_ids"
         ]
       },
       "SupportResponse": {
@@ -8451,6 +9196,13 @@
           "proposal_version": {
             "type": "integer",
             "minimum": 1
+          },
+          "attempt_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         },
         "required": [
@@ -8471,7 +9223,8 @@
           "proposed_by_id",
           "expected_evidence",
           "payload_digest",
-          "proposal_version"
+          "proposal_version",
+          "attempt_ids"
         ]
       },
       "ExecutionCreate": {
@@ -8975,6 +9728,13 @@
               "type": "string",
               "minLength": 1
             }
+          },
+          "confirmation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         },
         "required": [
@@ -8992,7 +9752,8 @@
           "contributor_ids",
           "experience_id",
           "previous_version_id",
-          "remaining_unknowns"
+          "remaining_unknowns",
+          "confirmation_ids"
         ]
       },
       "SkillCreate": {
@@ -9121,6 +9882,13 @@
               "type": "string",
               "minLength": 1
             }
+          },
+          "confirmation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         },
         "required": [
@@ -9137,7 +9905,8 @@
           "previous_version_id",
           "instructions",
           "conditions",
-          "stop_conditions"
+          "stop_conditions",
+          "confirmation_ids"
         ]
       },
       "EvaluationCreate": {
@@ -9304,6 +10073,24 @@
           },
           "independent_review": {
             "$ref": "#/components/schemas/IndependentReview"
+          },
+          "report_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "report_digest": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "review_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         },
         "required": [
@@ -9327,7 +10114,10 @@
           "model_cost_usd",
           "human_hours",
           "limitations",
-          "independent_review"
+          "independent_review",
+          "report_version",
+          "report_digest",
+          "review_record_ids"
         ]
       },
       "ReleaseCreate": {
@@ -10684,6 +11474,580 @@
           "reviewer_id",
           "summary",
           "evidence"
+        ]
+      },
+      "InboxItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "support",
+              "ownership_transfer",
+              "correction",
+              "feedback",
+              "usage_restriction",
+              "evaluation_review"
+            ]
+          },
+          "resource_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "received_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "available_actions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "resource_id",
+          "summary",
+          "status",
+          "received_at",
+          "available_actions"
+        ]
+      },
+      "InboxPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InboxItem"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ]
+      },
+      "SupportResponseRecord": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organization_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "support_request_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "responder_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "response": {
+            "type": "string",
+            "enum": [
+              "accept",
+              "needs_info",
+              "decline",
+              "withdraw"
+            ]
+          },
+          "explanation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20000
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "id",
+          "organization_id",
+          "version",
+          "created_at",
+          "updated_at",
+          "support_request_id",
+          "responder_id",
+          "response",
+          "explanation",
+          "conditions"
+        ]
+      },
+      "SupportFulfilmentRecord": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organization_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "support_request_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "provided_by_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20000
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRef"
+            }
+          },
+          "outcome_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "organization_id",
+          "version",
+          "created_at",
+          "updated_at",
+          "support_request_id",
+          "provided_by_id",
+          "summary",
+          "evidence",
+          "outcome_ids"
+        ]
+      },
+      "SupportSupplementCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "explanation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20000
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRef"
+            }
+          },
+          "revised_needed_by": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "explanation",
+          "evidence"
+        ]
+      },
+      "SupportSupplementRecord": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organization_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "support_request_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "submitted_by_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "explanation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20000
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRef"
+            }
+          },
+          "revised_needed_by": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "organization_id",
+          "version",
+          "created_at",
+          "updated_at",
+          "support_request_id",
+          "submitted_by_id",
+          "explanation",
+          "evidence",
+          "revised_needed_by"
+        ]
+      },
+      "ActionAttempt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organization_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "action_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "attempt_number": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "execution_subject_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finished_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "receipt_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "result_class": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "succeeded",
+              "failed",
+              "unknown"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "organization_id",
+          "version",
+          "created_at",
+          "updated_at",
+          "action_id",
+          "attempt_number",
+          "execution_subject_id",
+          "started_at",
+          "finished_at",
+          "receipt_id",
+          "result_class"
+        ]
+      },
+      "ActionReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organization_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "action_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "attempt_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "remote_operation_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "result_class": {
+            "type": "string",
+            "enum": [
+              "succeeded",
+              "failed",
+              "unknown"
+            ]
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20000
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRef"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "organization_id",
+          "version",
+          "created_at",
+          "updated_at",
+          "action_id",
+          "attempt_id",
+          "remote_operation_id",
+          "result_class",
+          "observed_at",
+          "summary",
+          "evidence"
+        ]
+      },
+      "EvaluationReviewCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "report_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "report_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "disputed",
+              "needs_info"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20000
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRef"
+            }
+          }
+        },
+        "required": [
+          "report_version",
+          "report_digest",
+          "verdict",
+          "reason",
+          "evidence"
+        ]
+      },
+      "EvaluationReview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organization_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "evaluation_run_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "report_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "report_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "reviewer_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "disputed",
+              "needs_info"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20000
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRef"
+            }
+          },
+          "independence_checked": {
+            "type": "boolean",
+            "const": true
+          }
+        },
+        "required": [
+          "id",
+          "organization_id",
+          "version",
+          "created_at",
+          "updated_at",
+          "evaluation_run_id",
+          "report_version",
+          "report_digest",
+          "reviewer_id",
+          "verdict",
+          "reason",
+          "evidence",
+          "independence_checked"
         ]
       }
     },

@@ -102,6 +102,9 @@
         ],
         "payload_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "proposal_version": 1,
+        "attempt_ids": [
+          "10000000-0000-4000-8000-000000000060"
+        ],
         "result_summary": "模拟连接器超时，等待核实"
       },
       "purpose": "生命周期version=3仍保留proposal_version=1的未知动作"
@@ -232,7 +235,9 @@
         ],
         "response_record_ids": [
           "10000000-0000-4000-8000-000000000021"
-        ]
+        ],
+        "fulfilment_record_ids": [],
+        "supplement_record_ids": []
       },
       "purpose": "回读请求期限背景与接受条件"
     },
@@ -352,6 +357,9 @@
         "limitations": [
           "公开案例不能称为未见任务"
         ],
+        "report_version": 1,
+        "report_digest": null,
+        "review_record_ids": [],
         "independent_review": {
           "status": "pending",
           "reviewer_id": null,

@@ -40,6 +40,7 @@
 ```sh
 python3 scripts/check_docs.py
 python3 scripts/check_costs.py
+python3 -m unittest discover -s tests -v
 ```
 
 检查范围是文档导航、需求追溯、契约结构、合成用例完整性及报价算例；它们不能替代实际应用、权限、恢复、模型行为和用户体验测试。完整入口与依赖见[开发文档](docs/DEVELOPMENT.md)。

@@ -25,3 +25,5 @@ jobs:
         run: python scripts/check_costs.py
       - name: Validate OpenAPI standard
         run: python -m openapi_spec_validator contracts/openapi.json
+      - name: Exercise demonstrated checker regressions and a valid control
+        run: python -m unittest discover -s tests -v
