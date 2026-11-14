@@ -1,0 +1,27 @@
+name: Design documents and contracts
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  design-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-docs.lock
+      - name: Install document validation tools
+        run: python -m pip install -r requirements-docs.lock
+      - name: Check document and contract consistency
+        run: python scripts/check_docs.py
+      - name: Recalculate budget scenarios
+        run: python scripts/check_costs.py
+      - name: Validate OpenAPI standard
+        run: python -m openapi_spec_validator contracts/openapi.json

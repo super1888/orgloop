@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "as_of_date": "2026-11-14",
+  "date_timezone": "Asia/Bangkok",
+  "currency": "USD",
+  "status": "public_price_snapshot_not_purchase_or_quality_recommendation",
+  "token_rates": {
+    "openai_luna_standard_short": {
+      "provider_model": "gpt-6-luna",
+      "input_per_million": 0.1,
+      "output_per_million": 0.5,
+      "cached_input_per_million": 0.01,
+      "profile": "Standard; input <= 272K; no cache credit in scenarios",
+      "source_id": "SRC-PRICE-LUNA",
+      "source_url": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+    },
+    "openai_sol_standard_short": {
+      "provider_model": "gpt-6.1-sol",
+      "input_per_million": 2.0,
+      "output_per_million": 10.0,
+      "cached_input_per_million": 0.1,
+      "profile": "Standard; input <= 272K; no cache credit in scenarios",
+      "source_id": "SRC-PRICE-SOL",
+      "source_url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+    },
+    "deepseek_flash_peak_uncached": {
+      "provider_model": "deepseek-flash",
+      "observed_model_version": "DeepSeek-V4.1-Flash-1017",
+      "input_per_million": 0.3,
+      "output_per_million": 1.2,
+      "profile": "Peak; cache miss; no off-peak or cache credit in scenarios",
+      "source_id": "SRC-PRICE-DEEPSEEK",
+      "source_url": "https://api-docs.deepseek.com/quick_start/pricing/"
+    },
+    "deepseek_pro_peak_uncached": {
+      "provider_model": "deepseek-v4-pro",
+      "observed_model_version": "DeepSeek-V4-Pro-0813",
+      "input_per_million": 1.32,
+      "output_per_million": 3.96,
+      "profile": "Peak; cache miss; no off-peak or cache credit in scenarios",
+      "source_id": "SRC-PRICE-DEEPSEEK",
+      "source_url": "https://api-docs.deepseek.com/quick_start/pricing/"
+    }
+  },
+  "embedding_rates": {
+    "openai_embedding_3_small": {
+      "provider_model": "text-embedding-3-small",
+      "input_per_million": 0.02,
+      "source_id": "SRC-PRICE-EMBEDDING",
+      "source_url": "https://developers.openai.com/api/docs/models/text-embedding-3-small"
+    }
+  },
+  "infrastructure_rates": {
+    "lightsail_linux_ipv4_8gb": {
+      "amount": 44.0,
+      "unit": "instance_month",
+      "source_id": "SRC-PRICE-AWS",
+      "source_url": "https://aws.amazon.com/lightsail/pricing/"
+    },
+    "lightsail_snapshot": {
+      "amount": 0.05,
+      "unit": "retained_gb_month",
+      "source_id": "SRC-PRICE-AWS",
+      "source_url": "https://aws.amazon.com/lightsail/pricing/"
+    },
+    "supabase_pro_plan": {
+      "amount": 25.0,
+      "unit": "organization_month",
+      "source_id": "SRC-PRICE-SUPABASE",
+      "source_url": "https://supabase.com/pricing"
+    },
+    "supabase_large_compute": {
+      "amount": 110.0,
+      "unit": "compute_month",
+      "source_id": "SRC-PRICE-SUPABASE",
+      "source_url": "https://supabase.com/pricing"
+    },
+    "supabase_compute_credit": {
+      "amount": 10.0,
+      "unit": "credit_per_organization_month",
+      "source_id": "SRC-PRICE-SUPABASE",
+      "source_url": "https://supabase.com/pricing"
+    },
+    "r2_standard_storage": {
+      "amount": 0.015,
+      "unit": "billable_gb_month",
+      "included_gb_month_per_account": 10,
+      "source_id": "SRC-PRICE-R2",
+      "source_url": "https://developers.cloudflare.com/r2/pricing/"
+    },
+    "r2_standard_class_a": {
+      "amount": 4.5,
+      "unit": "million_billable_operations",
+      "included_operations_per_account_month": 1000000,
+      "source_id": "SRC-PRICE-R2",
+      "source_url": "https://developers.cloudflare.com/r2/pricing/"
+    },
+    "r2_standard_class_b": {
+      "amount": 0.36,
+      "unit": "million_billable_operations",
+      "included_operations_per_account_month": 10000000,
+      "source_id": "SRC-PRICE-R2",
+      "source_url": "https://developers.cloudflare.com/r2/pricing/"
+    }
+  },
+  "external_tool_rates": {
+    "openai_web_search": {
+      "amount": 10.0,
+      "unit": "thousand_calls",
+      "extra": "Search content tokens may also be billed at model rates",
+      "source_id": "SRC-PRICE-OPENAI"
+    },
+    "deepseek_search": {
+      "amount": 0.75,
+      "unit": "thousand_searches",
+      "source_id": "SRC-PRICE-DEEPSEEK"
+    },
+    "deepseek_fetch": {
+      "amount": 0.75,
+      "unit": "thousand_fetches",
+      "source_id": "SRC-PRICE-DEEPSEEK"
+    }
+  },
+  "unknown_inputs": {
+    "fx_usd_cny": null,
+    "human_loaded_hourly_cost_cny": null,
+    "production_region": null,
+    "tax_and_payment_fees": null,
+    "organization_contract_discounts": null
+  }
+}

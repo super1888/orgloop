@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "as_of_date": "2026-11-14",
+  "status": "synthetic_budget_scenarios_not_measured_usage",
+  "assumptions": {
+    "model_calls_per_matter": 6,
+    "input_tokens_per_call": 8000,
+    "billable_output_tokens_per_call": 1000,
+    "output_definition": "Provider-reported total billable output including applicable reasoning tokens, not only visible answer text",
+    "extra_token_budget_ratio": 0.3,
+    "human_review_fraction": 0.1,
+    "minutes_per_human_review": 5,
+    "cached_input_fraction": 0.0,
+    "external_tool_cost_in_base_scenario_usd": 0.0,
+    "external_tool_cost_note": "Excluded from base scenario, not a claim that external tools are free"
+  },
+  "mixes": {
+    "openai_80_20": {
+      "share_basis": "Separate shares of total billed input and total billed output tokens",
+      "weights": {
+        "openai_luna_standard_short": 0.8,
+        "openai_sol_standard_short": 0.2
+      },
+      "quality_status": "Routing mix is illustrative and must pass capability evaluation"
+    },
+    "deepseek_80_20": {
+      "share_basis": "Separate shares of total billed input and total billed output tokens",
+      "weights": {
+        "deepseek_flash_peak_uncached": 0.8,
+        "deepseek_pro_peak_uncached": 0.2
+      },
+      "quality_status": "Routing mix is illustrative and must pass capability evaluation"
+    }
+  },
+  "monthly_cases": [
+    {
+      "id": "low",
+      "matters": 500,
+      "expected_input_tokens": 31200000,
+      "expected_billable_output_tokens": 3900000,
+      "expected_human_review_hours": 4.166666666666667,
+      "expected_model_cost_usd": {
+        "openai_luna_standard_short": 5.07,
+        "openai_sol_standard_short": 101.4,
+        "deepseek_flash_peak_uncached": 14.04,
+        "deepseek_pro_peak_uncached": 56.628
+      },
+      "expected_mix_cost_usd": {
+        "openai_80_20": 24.336,
+        "deepseek_80_20": 22.5576
+      }
+    },
+    {
+      "id": "medium",
+      "matters": 5000,
+      "expected_input_tokens": 312000000,
+      "expected_billable_output_tokens": 39000000,
+      "expected_human_review_hours": 41.666666666666664,
+      "expected_model_cost_usd": {
+        "openai_luna_standard_short": 50.7,
+        "openai_sol_standard_short": 1014.0,
+        "deepseek_flash_peak_uncached": 140.4,
+        "deepseek_pro_peak_uncached": 566.28
+      },
+      "expected_mix_cost_usd": {
+        "openai_80_20": 243.36,
+        "deepseek_80_20": 225.576
+      }
+    },
+    {
+      "id": "high",
+      "matters": 50000,
+      "expected_input_tokens": 3120000000,
+      "expected_billable_output_tokens": 390000000,
+      "expected_human_review_hours": 416.6666666666667,
+      "expected_model_cost_usd": {
+        "openai_luna_standard_short": 507.0,
+        "openai_sol_standard_short": 10140.0,
+        "deepseek_flash_peak_uncached": 1404.0,
+        "deepseek_pro_peak_uncached": 5662.8
+      },
+      "expected_mix_cost_usd": {
+        "openai_80_20": 2433.6,
+        "deepseek_80_20": 2255.76
+      }
+    }
+  ],
+  "infrastructure_cases": [
+    {
+      "id": "self_managed_reference",
+      "description": "Single-VM controlled validation reference; not HA or proven production capacity",
+      "components": [
+        { "rate_id": "lightsail_linux_ipv4_8gb", "quantity": 1 },
+        { "rate_id": "lightsail_snapshot", "quantity": 160 },
+        { "rate_id": "r2_standard_storage", "quantity": 100 }
+      ],
+      "storage_assumption": {
+        "document_primary_gb_month": 50,
+        "document_backup_gb_month": 50,
+        "database_export_gb_month": 10,
+        "total_gb_month": 110,
+        "included_gb_month_applied_once": 10,
+        "billable_gb_month": 100,
+        "class_a_operations_per_account_month": 100000,
+        "class_b_operations_per_account_month": 1000000
+      },
+      "expected_monthly_usd": 53.5,
+      "capacity_status": "unverified",
+      "recovery_status": "unverified; snapshots and copies do not prove successful restore"
+    },
+    {
+      "id": "managed_database_reference",
+      "description": "Application VM plus Pro/Large database reference; no PITR or HA commitment",
+      "components": [
+        { "rate_id": "lightsail_linux_ipv4_8gb", "quantity": 1 },
+        { "rate_id": "supabase_pro_plan", "quantity": 1 },
+        { "rate_id": "supabase_large_compute", "quantity": 1 },
+        { "rate_id": "supabase_compute_credit", "quantity": -1 },
+        { "rate_id": "lightsail_snapshot", "quantity": 160 },
+        { "rate_id": "r2_standard_storage", "quantity": 100 }
+      ],
+      "storage_assumption": {
+        "document_primary_gb_month": 50,
+        "document_backup_gb_month": 50,
+        "database_export_gb_month": 10,
+        "total_gb_month": 110,
+        "included_gb_month_applied_once": 10,
+        "billable_gb_month": 100,
+        "class_a_operations_per_account_month": 100000,
+        "class_b_operations_per_account_month": 1000000
+      },
+      "expected_monthly_usd": 178.5,
+      "capacity_status": "unverified",
+      "recovery_status": "unverified; daily backup does not establish sub-day RPO",
+      "pitr_included": false
+    }
+  ],
+  "embedding_case": {
+    "rate_id": "openai_embedding_3_small",
+    "one_time_input_tokens": 100000000,
+    "expected_one_time_usd": 2.0,
+    "excludes": ["document parsing", "OCR", "index storage", "reindexing", "query embeddings", "maintenance"]
+  },
+  "exclusions": [
+    "tax and payment fees",
+    "currency conversion",
+    "domain and additional network charges",
+    "source system API and enterprise licenses",
+    "external search and other tools",
+    "SSO and supplier support",
+    "first-time development and data cleanup",
+    "real human collaboration and execution work",
+    "connector and knowledge maintenance",
+    "incident response and restore exercises",
+    "high availability and independent disaster recovery"
+  ]
+}
